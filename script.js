@@ -121,8 +121,19 @@ function update() {
     snake.unshift(head);
     generateParticles(head.x * gridSize, head.y * gridSize); // Particles on move
 
-    // Game over conditions
-    if (head.x < 0 || head.x >= canvas.width / gridSize || head.y < 0 || head.y >= canvas.height / gridSize || checkCollision()) {
+    // Wall wrapping logic
+    if (head.x < 0) {
+        head.x = canvas.width / gridSize - 1; // Wrap to right edge
+    } else if (head.x >= canvas.width / gridSize) {
+        head.x = 0; // Wrap to left edge
+    }
+    if (head.y < 0) {
+        head.y = canvas.height / gridSize - 1; // Wrap to bottom edge
+    } else if (head.y >= canvas.height / gridSize) {
+        head.y = 0; // Wrap to top edge
+    }
+
+    if (checkCollision()) {
         clearInterval(gameLoopInterval);
         alert(`Game Over! Score: ${score}`);
         snake = [{ x: 10, y: 10 }];
